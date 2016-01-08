@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/Professor" android:icon="@android:drawable/ic_menu_camera"
+        <item android:id="@+id/Professor" android:icon="@drawable/ic_menu_professor"
             android:title="Professor" />
         <item android:id="@+id/Student" android:icon="@android:drawable/ic_menu_gallery"
             android:title="Student" />
