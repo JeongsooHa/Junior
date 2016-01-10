@@ -29,8 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/send_Button"
         android:src="@drawable/button"
-        android:background="#ffffff"
         android:layout_centerVertical="true"
-        />
+        android:background="#FAFAFA" />
 
 </RelativeLayout>

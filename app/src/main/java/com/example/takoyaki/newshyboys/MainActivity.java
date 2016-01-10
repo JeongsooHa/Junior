@@ -12,10 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public EditText question;
+    public ImageButton send;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        question = (EditText) findViewById(R.id.question_Text);
+        send = (ImageButton)findViewById(R.id.send_Button);
+
+        send.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                String inputText = question.getText().toString();
+                Toast.makeText(MainActivity.this, inputText,Toast.LENGTH_SHORT).show();
+            }});
+
 
     }
 
