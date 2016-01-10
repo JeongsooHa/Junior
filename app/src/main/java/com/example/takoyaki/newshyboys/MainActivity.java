@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +22,18 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.logging.Handler;
+
+import android.os.HandlerThread;
+import java.util.logging.LogRecord;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String html ="";
-    private Handler mHandler;
+    private HandlerThread mHandler;
+    private String TAG = "socketDebug";
 
     private Socket socket;
     private String name;
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("");
-
+        mHandler = new HandlerThread("handler");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -68,16 +74,35 @@ public class MainActivity extends AppCompatActivity
         question = (EditText) findViewById(R.id.question_Text);
         send = (ImageButton)findViewById(R.id.send_Button);
 
-        send.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        send.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 String inputText = question.getText().toString();
-                Toast.makeText(MainActivity.this, inputText,Toast.LENGTH_SHORT).show();
                 question.setText("");
-            }});
-
-
+                try{
+                    setSocket(ip,port);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                checkUpdate.start();
+            }
+        });
     }
+    private Thread checkUpdate = new Thread(){
+        public void run(){
+            try{
+                String line;
+                Log.d(TAG,"Thread Start");
+                while(true){
+                    Log.d(TAG,"running");
+                    line = networkReader.readLine();
+                    html = line;
 
+                }
+            }catch (Exception e){
+
+            }
+        }
+    };
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -138,5 +163,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setSocket(String ip, int port) throws IOException{
+        try{
+            socket = new Socket(ip,port);
+            networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
