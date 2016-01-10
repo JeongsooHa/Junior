@@ -39,8 +39,9 @@ public class MainActivity extends AppCompatActivity
     private String html = "";
     private HandlerThread mHandler;
     private String TAG = "socketDebug";
-
+    private SocketClient client;
     private Socket socket;
+    private SendThread sendthread;
     private String name;
     private BufferedReader networkReader;
     private BufferedWriter networkWriter;
@@ -93,11 +94,10 @@ public class MainActivity extends AppCompatActivity
                 timerTask = new MyTimerTask();
                 timer.schedule(timerTask, 500);
                 //connect socket and send message to server
-                try {
-                    setSocket("168.188.128.130", 5000,inputText);
-                }catch (Exception e){
-                    Log.d("ERROR BY setSocket","setSocket에서 문제가 생겼습니다.");
-                }
+                client = new SocketClient(ip,port);
+                client.start();
+                sendthread = new SendThread(socket,inputText);
+                sendthread.start();
             }
         });
     }
@@ -112,17 +112,6 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
-
-    public void setSocket(String ip, int port,String str) throws IOException {
-        Socket socket =null;
-        try {
-            socket = new Socket(ip, port);
-            Thread thread1 = new SenderThread(socket,str);
-            thread1.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
         @Override
         public void onBackPressed() {
@@ -186,29 +175,51 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-    private class SenderThread extends Thread {
-        Socket socket;
-        String sendText;
-        SenderThread(Socket socket,String sendText){
-            this.socket = socket;
-            this.sendText = sendText;
+
+    private class SocketClient extends Thread{
+        String ip;
+        int port;
+
+        public SocketClient(String ip, int port) {
+            this.ip = ip;
+            this.port = port;
         }
-        public void run(){
-            try{
-                PrintWriter writer = new PrintWriter(socket.getOutputStream());
-                    writer.println("0*aa*"+sendText);
-                //나중에 룸코드를 입력받아야 한다.
-                    writer.flush();
-            }catch (Exception E){
-                Log.d("ERROR BY SenderThread","SenderThread에서 문제가 생겼습니다.");
+
+        public void run() {
+
+            try {
+                // 연결후 바로 ReceiveThread 시작
+                socket = new Socket(ip, port);
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            finally {
-                try{
-                    socket.close();
-                }catch (Exception e){
-                    Log.d("ERROR BY SenderThread","socket.close()에서 문제가 생겼습니다.");
-                }
+        }
+    }
+
+    class SendThread extends Thread {
+        private Socket socket;
+        DataOutputStream output;
+        String inputtext;
+        public SendThread(Socket socket,String inputtext) {
+            this.socket = socket;
+            this.inputtext = inputtext;
+            try {
+                output = new DataOutputStream(socket.getOutputStream());
+            } catch (Exception e) {
             }
+        }
+
+        public void run() {
+
+            try {
+                output.writeUTF("0*aa*"+inputtext);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+            }
+
         }
     }
 }
