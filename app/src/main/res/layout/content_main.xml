@@ -9,4 +9,28 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_main"
     tools:context="com.example.takoyaki.newshyboys.MainActivity">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/question_Text"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="130dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_Button"
+        android:src="@drawable/button"
+        android:background="#ffffff"
+        android:layout_centerVertical="true"
+        />
+
 </RelativeLayout>
