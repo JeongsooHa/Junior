@@ -1,6 +1,8 @@
 package com.example.takoyaki.newshyboys;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,9 +13,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     public EditText question;
     public ImageButton send;
     private MyTimerTask timerTask;
+    private EditText code_edit;
+
 
     @Override
     protected void onStop() {
@@ -143,10 +149,36 @@ public class MainActivity extends AppCompatActivity
             // Handle navigation view item clicks here.
             int id = item.getItemId();
 
-            if (id == R.id.Professor) {
 
-                Intent intent = new Intent(MainActivity.this, ProfessorActivity.class);
-                startActivity(intent);
+            if (id == R.id.Professor) {
+                Context mContext = getApplicationContext();
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
+                final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
+
+                aDialog.setTitle("Room code"); //타이틀바 제목
+                aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
+                aDialog.setCancelable(true);
+                //그냥 닫기버튼을 위한 부분
+                code_edit = (EditText) layout.findViewById(R.id.code_edittext);
+                aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String code = code_edit.getText().toString();
+
+                        Intent intent = new Intent(MainActivity.this, ProfessorActivity.class);
+                        intent.putExtra("code", code);
+                        startActivity(intent);
+                    }
+                });
+                //팝업창 생성
+                android.app.AlertDialog ad = aDialog.create();
+                ad.show();//보여줌!
+
                 // Handle the camera action
             } else if (id == R.id.Student) {
 

@@ -10,9 +10,25 @@
     tools:showIn="@layout/app_bar_proffesor"
     tools:context="com.example.takoyaki.newshyboys.ProfessorActivity">
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/room_Text"
+            android:layout_gravity="left|center_horizontal"
+            android:textSize="30dp"
+            android:layout_marginTop="30dp"
+            android:textColor="#000000" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp" />
+    </LinearLayout>
 </RelativeLayout>
