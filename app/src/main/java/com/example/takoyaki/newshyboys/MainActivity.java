@@ -25,12 +25,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
+import java.io.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.Socket;
+import java.net.*;
 
 
 import android.os.HandlerThread;
@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity
     private String html = "";
     private HandlerThread mHandler;
     private String TAG = "socketDebug";
-
+    private SocketClient client;
     private Socket socket;
+    private SendThread sendthread;
     private String name;
     private BufferedReader networkReader;
     private BufferedWriter networkWriter;
@@ -98,9 +99,15 @@ public class MainActivity extends AppCompatActivity
                 Timer timer = new Timer();
                 timerTask = new MyTimerTask();
                 timer.schedule(timerTask, 500);
+                //connect socket and send message to server
+                client = new SocketClient(ip,port);
+                client.start();
+                sendthread = new SendThread(socket,inputText);
+                sendthread.start();
             }
         });
     }
+
         private class MyTimerTask extends TimerTask {
         public void run() {
             MainActivity.this.runOnUiThread(new Runnable() {
@@ -111,6 +118,7 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
+
         @Override
         public void onBackPressed() {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -199,13 +207,51 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-        public void setSocket(String ip, int port) throws IOException {
+
+    private class SocketClient extends Thread{
+        String ip;
+        int port;
+
+        public SocketClient(String ip, int port) {
+            this.ip = ip;
+            this.port = port;
+        }
+
+        public void run() {
+
             try {
+                // 연결후 바로 ReceiveThread 시작
                 socket = new Socket(ip, port);
-                networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    class SendThread extends Thread {
+        private Socket socket;
+        DataOutputStream output;
+        String inputtext;
+        public SendThread(Socket socket,String inputtext) {
+            this.socket = socket;
+            this.inputtext = inputtext;
+            try {
+                output = new DataOutputStream(socket.getOutputStream());
+            } catch (Exception e) {
+            }
+        }
+
+        public void run() {
+
+            try {
+                output.writeUTF("0*aa*"+inputtext);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+            }
+
+        }
+    }
 }
