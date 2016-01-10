@@ -29,8 +29,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/send_Button"
         android:src="@drawable/button"
-        android:background="#ffffff"
+        android:background="#FAFAFA"
         android:layout_centerVertical="true"
-        />
+        android:layout_alignParentStart="false" />
 
 </RelativeLayout>

@@ -13,9 +13,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Handler;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private String html ="";
+    private Handler mHandler;
 
+    private Socket socket;
+    private String name;
+    private BufferedReader networkReader;
+    private BufferedWriter networkWriter;
+    private String ip = "168.188.128.130";
+    private int port = 5000;
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        try{
+            socket.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
