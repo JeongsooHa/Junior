@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,6 +24,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Handler;
 
 public class MainActivity extends AppCompatActivity
@@ -67,17 +71,23 @@ public class MainActivity extends AppCompatActivity
 
         question = (EditText) findViewById(R.id.question_Text);
         send = (ImageButton)findViewById(R.id.send_Button);
-
-        send.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.anitest);
+        send.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 String inputText = question.getText().toString();
-                Toast.makeText(MainActivity.this, inputText,Toast.LENGTH_SHORT).show();
-                question.setText("");
+                //Toast.makeText(MainActivity.this, inputText,Toast.LENGTH_SHORT).show();
+
+                question.startAnimation(animation);
+                Timer timer =new Timer();
+                timer.schedule(myTask,1000);
             }});
 
-
     }
-
+    TimerTask myTask = new TimerTask(){
+        public void run(){
+            question.setText("");
+        }
+    };
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
