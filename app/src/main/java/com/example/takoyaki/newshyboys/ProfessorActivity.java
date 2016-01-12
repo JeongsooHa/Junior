@@ -1,5 +1,7 @@
 package com.example.takoyaki.newshyboys;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,8 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.DataOutputStream;
@@ -22,11 +28,15 @@ public class ProfessorActivity extends AppCompatActivity
 
     String roomcode;
     TextView room;
+<<<<<<< HEAD
     SocketClient client;
     ReceiveThread receive;
     private String ip = "168.188.128.130";
     private int port = 5000;
 
+=======
+    private EditText code_edit;
+>>>>>>> 516282d494dd3530e7f8271c550f960bb75b9063
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +105,30 @@ public class ProfessorActivity extends AppCompatActivity
 
         if (id == R.id.Professor) {
             // Handle the camera action
-        } else if (id == R.id.Student) {
+        } else if (id == R.id.code_change) {
+
+            Context mContext = getApplicationContext();
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
+            final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(ProfessorActivity.this);
+
+            aDialog.setTitle("Room code"); //타이틀바 제목
+            aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
+            aDialog.setCancelable(true);
+
+            code_edit = (EditText) layout.findViewById(R.id.code_edittext);
+            aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    String code = code_edit.getText().toString();
+                }
+            });
+            android.app.AlertDialog ad = aDialog.create();
+            ad.show();
 
         }
 
