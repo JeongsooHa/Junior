@@ -5,23 +5,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ProfessorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +39,10 @@ public class ProfessorActivity extends AppCompatActivity
 //    private String ip = "168.188.128.130";
     private int port = 5000;
     private EditText code_edit;
+    static ArrayAdapter<String> arrayAdapter;
+    static ArrayList<String> arrayList = new ArrayList<String>();
+    ListView listView;
+    static SendMassgeHandler mhandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +63,23 @@ public class ProfessorActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        mhandler = new SendMassgeHandler();
 
         room = (TextView)findViewById(R.id.room_Text);
         Intent intent = getIntent();
         roomcode = intent.getExtras().getString("code");//roomcode 정보를 저장
         room.setText(roomcode);//룸코드를 textview로 출력
 
+        listView = (ListView) findViewById( R.id.question_List);
+        listView.setAdapter(arrayAdapter) ;
+        Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
-        client = new SocketClient(ip,port,roomcode,"test",1);
+        client = new SocketClient(ip,port, roomcode, "test",1);
+        Log.d("debug", "확인2");
         client.start();
+        Log.d("debug", "확인3");
 
+        Log.d("debug", "확인4");
     }
 
     @Override
@@ -136,4 +152,20 @@ public class ProfessorActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    class SendMassgeHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1234:
+                 arrayAdapter.notifyDataSetChanged();
+                 break;
+             default:
+                 break;
+            }
+
+        }
+
+    };
 }
