@@ -15,10 +15,12 @@ public class SendThread extends Thread {
         Socket socket;
         DataOutputStream output;
         String inputtext;
-        public SendThread(Socket socket,String inputtext,int studentORprofessor) {
+        String roomcode;
+        public SendThread(Socket socket,String roomcode, String inputtext,int studentORprofessor) {
             this.socket = socket;
             this.inputtext = inputtext;
             this.studentORprofessor = studentORprofessor;
+            this.roomcode = roomcode;
             try {
                 output = new DataOutputStream(this.socket.getOutputStream());
             } catch (Exception e) {
@@ -30,7 +32,7 @@ public class SendThread extends Thread {
             try {
                 Log.d("debugNull",studentORprofessor+" / "+inputtext);
                 Log.d("debugNull",output.toString());
-                output.writeUTF(studentORprofessor + "*aa*" + inputtext);
+                output.writeUTF(studentORprofessor +"*"+ roomcode +"*"+ inputtext);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (NullPointerException npe) {

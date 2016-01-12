@@ -28,15 +28,12 @@ public class ProfessorActivity extends AppCompatActivity
 
     String roomcode;
     TextView room;
-<<<<<<< HEAD
     SocketClient client;
     ReceiveThread receive;
-    private String ip = "168.188.128.130";
+    String ip="168.188.129.152";
+    //private String ip = "168.188.128.130";
     private int port = 5000;
-
-=======
     private EditText code_edit;
->>>>>>> 516282d494dd3530e7f8271c550f960bb75b9063
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +58,7 @@ public class ProfessorActivity extends AppCompatActivity
         room.setText(roomcode);
 
         //서버와 socket통신을 하기 위한 사전작업
-        client = new SocketClient(ip,port,"test",1);
+        client = new SocketClient(ip,port,roomcode,"test",1);
         client.start();
     }
 
