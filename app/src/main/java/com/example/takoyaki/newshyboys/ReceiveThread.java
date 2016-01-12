@@ -11,12 +11,13 @@ import java.net.Socket;
  * Created by hjj12 on 2016-01-12.
  */
 public class ReceiveThread extends Thread {
-    int studentORprofessor;
     Socket socket;
     DataInputStream input;
+    String roomcode;
 
-    public ReceiveThread(Socket socket) {
+    public ReceiveThread(Socket socket,String roomcode) {
         this.socket = socket;
+        this.roomcode = roomcode;
         try {
             input = new DataInputStream(socket.getInputStream());
         } catch (Exception e) {

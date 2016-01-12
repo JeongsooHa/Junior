@@ -40,12 +40,11 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private String TAG = "socketDebug";
     private SocketClient client;
     private String ip = "168.188.129.152";
     //    private String ip = "168.188.128.130";
     private int port = 5000;
-
+    String roomcode=null;
     public EditText question;
     public ImageButton send;
     private MyTimerTask timerTask;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        client.exitServer();
+        //client.exitServer();
     }
 
     @Override
@@ -81,18 +80,44 @@ public class MainActivity extends AppCompatActivity
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.anitest);
         send.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 String inputText = question.getText().toString();
                 //Toast.makeText(MainActivity.this, inputText,Toast.LENGTH_SHORT).show();
 
-                question.startAnimation(animation);
-                Timer timer = new Timer();
-                timerTask = new MyTimerTask();
-                timer.schedule(timerTask, 500);
-                //connect socket and send message to server
-                client = new SocketClient(ip,port,inputText,0);
-                client.start();
+                if (roomcode == null) {
+                    Context mContext = getApplicationContext();
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+                    View layout = inflater.inflate(R.layout.roomcode_popup, (ViewGroup) findViewById(R.id.h_room_popup));
+                    final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
+
+                    aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
+                    aDialog.setCancelable(true);
+
+                    code_edit = (EditText) layout.findViewById(R.id.code_edittext);
+                    aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            String code = code_edit.getText().toString();
+                            roomcode = code;
+                        }
+                    });
+                    android.app.AlertDialog ad = aDialog.create();
+                    ad.show();
+                } else {
+                    question.startAnimation(animation);
+                    Timer timer = new Timer();
+                    timerTask = new MyTimerTask();
+                    timer.schedule(timerTask, 500);
+                    //connect socket and send message to server
+                    client = new SocketClient(ip, port, roomcode, inputText, 0);
+                    client.start();
 //                sendthread = new SendThread(client.socket,inputText,0);
 //                sendthread.start();
+                }
             }
         });
     }
@@ -196,6 +221,7 @@ public class MainActivity extends AppCompatActivity
                 aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String code = code_edit.getText().toString();
+                        roomcode = code;
                     }
                 });
                 android.app.AlertDialog ad = aDialog.create();
