@@ -19,12 +19,22 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+
 public class ProfessorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String roomcode;
     TextView room;
+    SocketClient client;
+    ReceiveThread receive;
+    private String ip = "168.188.129.152";
+//    private String ip = "168.188.128.130";
+    private int port = 5000;
     private EditText code_edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +57,13 @@ public class ProfessorActivity extends AppCompatActivity
 
 
         room = (TextView)findViewById(R.id.room_Text);
-       // Typeface face=Typeface.createFromAsset(getAssets(), "iloveu.ttf");
-       // room.setTypeface(face);
         Intent intent = getIntent();
         roomcode = intent.getExtras().getString("code");//roomcode 정보를 저장
         room.setText(roomcode);//룸코드를 textview로 출력
+
+        //서버와 socket통신을 하기 위한 사전작업
+        client = new SocketClient(ip,port,"test",1);
+        client.start();
     }
 
     @Override

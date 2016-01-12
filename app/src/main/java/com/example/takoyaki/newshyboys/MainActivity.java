@@ -40,16 +40,10 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private String html = "";
-    private HandlerThread mHandler;
     private String TAG = "socketDebug";
     private SocketClient client;
-    private Socket socket;
-    private SendThread sendthread;
-    private String name;
-    private BufferedReader networkReader;
-    private BufferedWriter networkWriter;
-    private String ip = "168.188.128.130";
+    private String ip = "168.188.129.152";
+    //    private String ip = "168.188.128.130";
     private int port = 5000;
 
     public EditText question;
@@ -61,11 +55,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-//        try {
-//            socket.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        client.exitServer();
     }
 
     @Override
@@ -76,7 +66,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("");
-        mHandler = new HandlerThread("handler");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -100,10 +89,10 @@ public class MainActivity extends AppCompatActivity
                 timerTask = new MyTimerTask();
                 timer.schedule(timerTask, 500);
                 //connect socket and send message to server
-                client = new SocketClient(ip,port);
+                client = new SocketClient(ip,port,inputText,0);
                 client.start();
-                sendthread = new SendThread(socket,inputText);
-                sendthread.start();
+//                sendthread = new SendThread(client.socket,inputText,0);
+//                sendthread.start();
             }
         });
     }
@@ -217,52 +206,4 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             return true;
         }
-
-
-    private class SocketClient extends Thread{
-        String ip;
-        int port;
-
-        public SocketClient(String ip, int port) {
-            this.ip = ip;
-            this.port = port;
-        }
-
-        public void run() {
-
-            try {
-                // 연결후 바로 ReceiveThread 시작
-                socket = new Socket(ip, port);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    class SendThread extends Thread {
-        private Socket socket;
-        DataOutputStream output;
-        String inputtext;
-        public SendThread(Socket socket,String inputtext) {
-            this.socket = socket;
-            this.inputtext = inputtext;
-            try {
-                output = new DataOutputStream(socket.getOutputStream());
-            } catch (Exception e) {
-            }
-        }
-
-        public void run() {
-
-            try {
-                output.writeUTF("0*aa*"+inputtext);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NullPointerException npe) {
-                npe.printStackTrace();
-            }
-
-        }
-    }
 }
