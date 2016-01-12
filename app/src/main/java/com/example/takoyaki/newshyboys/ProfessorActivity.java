@@ -13,11 +13,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+
 public class ProfessorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String roomcode;
     TextView room;
+    SocketClient client;
+    ReceiveThread receive;
+    private String ip = "168.188.128.130";
+    private int port = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,10 @@ public class ProfessorActivity extends AppCompatActivity
         Intent intent = getIntent();
         roomcode = intent.getExtras().getString("code");
         room.setText(roomcode);
+
+        //서버와 socket통신을 하기 위한 사전작업
+        client = new SocketClient(ip,port,"test",1);
+        client.start();
     }
 
     @Override
