@@ -2,8 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/Professor" android:icon="@drawable/ic_menu_professor"
-            android:title="Professor" />
         <item android:id="@+id/code_change" android:icon="@drawable/ic_menu_change"
             android:title="룸코드 변경" />
     </group>

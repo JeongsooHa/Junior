@@ -2,6 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name= "android:typeface">serif</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#9c27b0</item>
         <item name="colorPrimaryDark">#782187</item>

@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
                 View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
                 final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
 
-                aDialog.setTitle("Room code"); //타이틀바 제목
+
                 aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
                 aDialog.setCancelable(true);
                 //그냥 닫기버튼을 위한 부분
@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity
                 View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
                 final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
 
-                aDialog.setTitle("Room code"); //타이틀바 제목
                 aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
                 aDialog.setCancelable(true);
 
@@ -213,16 +212,6 @@ public class MainActivity extends AppCompatActivity
                 android.app.AlertDialog ad = aDialog.create();
                 ad.show();
             }
-//          else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        }
-//        else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
