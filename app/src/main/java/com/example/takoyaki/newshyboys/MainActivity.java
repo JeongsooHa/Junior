@@ -41,8 +41,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private SocketClient client;
-    //private String ip = "168.188.128.130";
-    String ip="168.188.129.152";
+    private String ip = "168.188.129.152";
+    //    private String ip = "168.188.128.130";
     private int port = 5000;
     String roomcode=null;
     public EditText question;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        client.exitServer();
+        //client.exitServer();
     }
 
     @Override
@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity
                     View layout = inflater.inflate(R.layout.roomcode_popup, (ViewGroup) findViewById(R.id.h_room_popup));
                     final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
 
-                    aDialog.setTitle("Room code"); //타이틀바 제목
                     aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
                     aDialog.setCancelable(true);
 
@@ -180,7 +179,7 @@ public class MainActivity extends AppCompatActivity
                 View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
                 final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
 
-                aDialog.setTitle("Room code"); //타이틀바 제목
+
                 aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
                 aDialog.setCancelable(true);
                 //그냥 닫기버튼을 위한 부분
@@ -211,7 +210,6 @@ public class MainActivity extends AppCompatActivity
                 View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
                 final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(MainActivity.this);
 
-                aDialog.setTitle("Room code"); //타이틀바 제목
                 aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
                 aDialog.setCancelable(true);
 
@@ -223,21 +221,12 @@ public class MainActivity extends AppCompatActivity
                 aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String code = code_edit.getText().toString();
+                        roomcode = code;
                     }
                 });
                 android.app.AlertDialog ad = aDialog.create();
                 ad.show();
             }
-//          else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        }
-//        else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);

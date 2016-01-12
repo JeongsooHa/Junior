@@ -5,33 +5,36 @@
     android:layout_height="fill_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context=".HiddenActivity"
-    android:fillViewport="false"> <!--해당 액티비티 선언-->
+    tools:context=".HiddenActivity" > <!--해당 액티비티 선언-->
 
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-
+        android:layout_height="match_parent"
+        android:longClickable="false"
+        android:measureWithLargestChild="false">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="room code"
-            android:id="@+id/code_Text"
+            android:id="@+id/color"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
             android:gravity="center"
-            android:textSize="20dp" />
+            android:textSize="30dp"
+            android:background="#9c27b0"
+            android:linksClickable="false" />
+
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
             android:id="@+id/code_edittext"
-            android:textColor="#000000" />
-
+            android:textColor="#000000"
+            android:layout_marginBottom="20dp"
+            android:hint="룸코드" />
 
     </LinearLayout>
 </ScrollView>

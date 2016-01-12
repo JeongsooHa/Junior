@@ -29,17 +29,18 @@ public class ProfessorActivity extends AppCompatActivity
     String roomcode;
     TextView room;
     SocketClient client;
-    ReceiveThread receive;
-    String ip="168.188.129.152";
-    //private String ip = "168.188.128.130";
+    private String ip = "168.188.129.152";
+//    private String ip = "168.188.128.130";
     private int port = 5000;
     private EditText code_edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_professor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         setTitle("");
 
@@ -52,14 +53,17 @@ public class ProfessorActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         room = (TextView)findViewById(R.id.room_Text);
         Intent intent = getIntent();
-        roomcode = intent.getExtras().getString("code");
-        room.setText(roomcode);
+        roomcode = intent.getExtras().getString("code");//roomcode 정보를 저장
+        room.setText(roomcode);//룸코드를 textview로 출력
 
         //서버와 socket통신을 하기 위한 사전작업
         client = new SocketClient(ip,port,roomcode,"test",1);
         client.start();
+
     }
 
     @Override
@@ -100,17 +104,14 @@ public class ProfessorActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.Professor) {
-            // Handle the camera action
-        } else if (id == R.id.code_change) {
-
+        if (id == R.id.code_change) {
             Context mContext = getApplicationContext();
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             View layout = inflater.inflate(R.layout.roomcode_popup,(ViewGroup) findViewById(R.id.h_room_popup));
             final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(ProfessorActivity.this);
 
-            aDialog.setTitle("Room code"); //타이틀바 제목
+
             aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
             aDialog.setCancelable(true);
 
@@ -122,13 +123,15 @@ public class ProfessorActivity extends AppCompatActivity
             aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     String code = code_edit.getText().toString();
+                    room.setText(code);
+                    roomcode = code;
+                    client = new SocketClient(ip,port,roomcode,"test",1);
+                    client.start();
                 }
             });
             android.app.AlertDialog ad = aDialog.create();
             ad.show();
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
