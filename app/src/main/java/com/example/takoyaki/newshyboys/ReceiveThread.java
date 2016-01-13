@@ -1,11 +1,14 @@
 package com.example.takoyaki.newshyboys;
 
+import android.os.Message;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by hjj12 on 2016-01-12.
@@ -15,7 +18,9 @@ public class ReceiveThread extends Thread {
     DataInputStream input;
     String roomcode;
 
+
     public ReceiveThread(Socket socket,String roomcode) {
+        Log.d("debug", "리시브 스레드");
         this.socket = socket;
         this.roomcode = roomcode;
         try {
@@ -27,13 +32,22 @@ public class ReceiveThread extends Thread {
     public void run() {
 
         try {
+            Log.d("debug", "리시브 스레드2");
             while (input != null) {
                 String msg = input.readUTF();
-                Log.d("msg_debug",msg);
+                Log.d("msg_debug", msg);
+                ProfessorActivity.arrayList.add(msg);
+                Log.d("debug", "리시브 스레드3");
             }
-        } catch (IOException e) {
+            Message msg = Message.obtain(ProfessorActivity.mhandler,1234,111);
+            Log.d("debug", "msg.toString()  "+msg.toString());
+            ProfessorActivity.mhandler.sendMessage(msg);
+            Log.d("debug", "리시브 스레드5");
+        }catch (IOException e) {
             e.printStackTrace();
         }
 
     }
+
+
 }
