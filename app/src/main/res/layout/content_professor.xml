@@ -29,6 +29,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/question_List"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="30dp"
+            android:background="#ffffff"
+            android:clickable="false" />
     </LinearLayout>
 </RelativeLayout>

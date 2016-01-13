@@ -46,8 +46,18 @@ public class ProfessorActivity extends AppCompatActivity
     public Handler hMain = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    Log.d("debug", msg.obj.toString()+"    예예예");
+                    arrayList.add(msg.obj.toString());
+                    break;
+                default:
+                    break;
+            }
+            Log.d("debug", "리시브 스레드5");
             UI_change(); //MainActivity의 함수이다.
-
+            Log.d("debug", "리시브 스레드8");
         }
     };
 
@@ -76,6 +86,7 @@ public class ProfessorActivity extends AppCompatActivity
         room.setText(roomcode);//룸코드를 textview로 출력
 
         listView = (ListView) findViewById( R.id.question_List);
+        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayList);
         listView.setAdapter(arrayAdapter) ;
         Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
@@ -159,7 +170,9 @@ public class ProfessorActivity extends AppCompatActivity
     }
 
     public void UI_change(){
+        Log.d("debug", "리시브 스레드6");
         arrayAdapter.notifyDataSetChanged();
+        Log.d("debug", "리시브 스레드7");
     }
 
 }
