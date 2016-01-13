@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private EditText code_edit;
 
 
+    
     @Override
     protected void onStop() {
         super.onStop();
