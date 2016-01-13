@@ -42,7 +42,14 @@ public class ProfessorActivity extends AppCompatActivity
     static ArrayAdapter<String> arrayAdapter;
     static ArrayList<String> arrayList = new ArrayList<String>();
     ListView listView;
-    static SendMassgeHandler mhandler;
+
+    public Handler hMain = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            UI_change(); //MainActivity의 함수이다.
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +70,6 @@ public class ProfessorActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mhandler = new SendMassgeHandler();
-
         room = (TextView)findViewById(R.id.room_Text);
         Intent intent = getIntent();
         roomcode = intent.getExtras().getString("code");//roomcode 정보를 저장
@@ -74,7 +79,7 @@ public class ProfessorActivity extends AppCompatActivity
         listView.setAdapter(arrayAdapter) ;
         Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
-        client = new SocketClient(ip,port, roomcode, "test",1);
+        client = new SocketClient(ip,port, roomcode, "test",1,hMain);
         Log.d("debug", "확인2");
         client.start();
         Log.d("debug", "확인3");
@@ -141,7 +146,7 @@ public class ProfessorActivity extends AppCompatActivity
                     String code = code_edit.getText().toString();
                     room.setText(code);
                     roomcode = code;
-                    client = new SocketClient(ip,port,roomcode,"test",1);
+                    client = new SocketClient(ip,port,roomcode,"test",1,hMain);
                     client.start();
                 }
             });
@@ -152,20 +157,9 @@ public class ProfessorActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    class SendMassgeHandler extends Handler {
 
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1234:
-                 arrayAdapter.notifyDataSetChanged();
-                 break;
-             default:
-                 break;
-            }
+    public void UI_change(){
+        arrayAdapter.notifyDataSetChanged();
+    }
 
-        }
-
-    };
 }
