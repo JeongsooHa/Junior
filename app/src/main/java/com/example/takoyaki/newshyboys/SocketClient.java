@@ -47,11 +47,7 @@ public class SocketClient extends Thread{
     }
 
     public void exitServer(){
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendthread.exitSocket();
     }
 }
 

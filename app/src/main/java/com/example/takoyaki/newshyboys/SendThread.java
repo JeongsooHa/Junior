@@ -47,5 +47,12 @@ public class SendThread extends Thread {
             }
 
         }
+        public void exitSocket(){
+            try {
+                output.writeUTF("Socketisclosed");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 }

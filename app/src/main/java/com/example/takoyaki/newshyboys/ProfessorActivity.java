@@ -46,7 +46,17 @@ public class ProfessorActivity extends AppCompatActivity
     public Handler hMain = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            UI_change(); //MainActivity의 함수이다.
+            switch (msg.what){
+                case 0:
+                    UI_change(); //MainActivity의 함수이다.
+                    break;
+                case 1:
+                    duplication();
+                    break;
+                default:
+                    break;
+            }
+
 
         }
     };
@@ -76,10 +86,11 @@ public class ProfessorActivity extends AppCompatActivity
         room.setText(roomcode);//룸코드를 textview로 출력
 
         listView = (ListView) findViewById( R.id.question_List);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(arrayAdapter) ;
         Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
-        client = new SocketClient(ip,port, roomcode, "test",1,hMain);
+        client = new SocketClient(ip,port, roomcode, "Professor",1,hMain);
         Log.d("debug", "확인2");
         client.start();
         Log.d("debug", "확인3");
@@ -93,6 +104,9 @@ public class ProfessorActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            arrayList.clear();
+            arrayAdapter.notifyDataSetChanged();
+            client.exitServer();
             super.onBackPressed();
         }
     }
@@ -146,7 +160,10 @@ public class ProfessorActivity extends AppCompatActivity
                     String code = code_edit.getText().toString();
                     room.setText(code);
                     roomcode = code;
-                    client = new SocketClient(ip,port,roomcode,"test",1,hMain);
+                    arrayList.clear();
+                    arrayAdapter.notifyDataSetChanged();
+                    client.exitServer();
+                    client = new SocketClient(ip,port,roomcode,"Professor",1,hMain);
                     client.start();
                 }
             });
@@ -160,6 +177,36 @@ public class ProfessorActivity extends AppCompatActivity
 
     public void UI_change(){
         arrayAdapter.notifyDataSetChanged();
+    }
+    public void duplication(){
+        Context mContext = getApplicationContext();
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View layout = inflater.inflate(R.layout.duplication_popup,(ViewGroup) findViewById(R.id.duplicate_popup_view));
+        final android.app.AlertDialog.Builder aDialog = new android.app.AlertDialog.Builder(ProfessorActivity.this);
+
+
+        aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
+        aDialog.setCancelable(true);
+        //그냥 닫기버튼을 위한 부분
+        code_edit = (EditText) layout.findViewById(R.id.code_edittext);
+        aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        aDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String code = code_edit.getText().toString();
+                room.setText(code);
+                arrayList.clear();
+                arrayAdapter.notifyDataSetChanged();
+                client = new SocketClient(ip,port,roomcode,"Professor",1,hMain);
+                client.start();
+            }
+        });
+        //팝업창 생성
+        android.app.AlertDialog ad = aDialog.create();
+        ad.show();//보여줌!
     }
 
 }

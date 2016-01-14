@@ -39,10 +39,16 @@ public class ReceiveThread extends Thread {
             while (input != null) {
                 String msg = input.readUTF();
                 Log.d("msg_debug", msg);
-                ProfessorActivity.arrayList.add(msg);
-                Log.d("debug", "리시브 스레드3");
-                Message please = Message.obtain(hMain,0,0);
-                hMain.sendMessage(please);
+                if(msg.equals("Roomisexisted")){
+                    Message please = Message.obtain(hMain,1,0);
+                    hMain.sendMessage(please);
+                }else {
+                    ProfessorActivity.arrayList.add(msg);
+                    Log.d("debug", "리시브 스레드3");
+                    Message please = Message.obtain(hMain,0,0);
+                    hMain.sendMessage(please);
+                }
+
             }
             Log.d("debug", "리시브 스레드5");
         }catch (IOException e) {
