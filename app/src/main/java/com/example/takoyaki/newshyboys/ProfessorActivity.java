@@ -44,12 +44,14 @@ public class ProfessorActivity extends AppCompatActivity
     ListView listView;
     static SendMassgeHandler mhandler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_professor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
         setTitle("");
@@ -80,6 +82,7 @@ public class ProfessorActivity extends AppCompatActivity
         Log.d("debug", "확인3");
 
         Log.d("debug", "확인4");
+
     }
 
     @Override

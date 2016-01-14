@@ -8,25 +8,4 @@
             android:title="룸코드 변경" />
     </group>
 
-    <group android:enabled="false">
-        <item android:id="@+id/blank1"
-            android:title=""/>
-        <item android:id="@+id/blank2"
-            android:title="" />
-        <!--<item android:id="@+id/blank3"-->
-            <!--android:title="" />-->
-
-        </group>
-
-    <group android:enabled="false">
-
-    <item android:title="Information">
-        <menu>
-            <item android:id="@+id/roomcode" android:icon="@drawable/ic_menu_door"
-                android:title="룸코드" />
-        </menu>
-    </item>
-
-    </group>
-
 </menu>
