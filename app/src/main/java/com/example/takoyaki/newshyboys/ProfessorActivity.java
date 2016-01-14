@@ -80,6 +80,8 @@ public class ProfessorActivity extends AppCompatActivity
         roomcode = intent.getExtras().getString("code");//roomcode 정보를 저장
         room.setText(roomcode);//룸코드를 textview로 출력
 
+
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.professor_listview_row, arrayList);
         listView = (ListView) findViewById( R.id.question_List);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.row, arrayList);
         listView.setAdapter(arrayAdapter);
@@ -90,6 +92,7 @@ public class ProfessorActivity extends AppCompatActivity
         client.start();
 
     }
+
 
     @Override
     public void onBackPressed() {
