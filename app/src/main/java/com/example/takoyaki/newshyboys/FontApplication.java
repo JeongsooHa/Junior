@@ -16,6 +16,6 @@ public class FontApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "applegodic.ttf");
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "seoul.ttf");
     }
 }

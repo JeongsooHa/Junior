@@ -50,7 +50,6 @@ public class ReceiveThread extends Thread {
                 }
 
             }
-            Log.d("debug", "리시브 스레드5");
         }catch (IOException e) {
             e.printStackTrace();
         }

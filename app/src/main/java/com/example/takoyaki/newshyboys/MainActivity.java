@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     Handler hMain=null;
 
 
-    
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity
 
                 aDialog.setView(layout); //inti.xml 파일을 뷰로 셋팅
                 aDialog.setCancelable(true);
+
                 //그냥 닫기버튼을 위한 부분
                 code_edit = (EditText) layout.findViewById(R.id.code_edittext);
                 aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
@@ -203,6 +205,7 @@ public class MainActivity extends AppCompatActivity
                 //팝업창 생성
                 android.app.AlertDialog ad = aDialog.create();
                 ad.show();//보여줌!
+
 
                 // Handle the camera action
             } else if (id == R.id.code_change) { //룸코드 바꿀 시

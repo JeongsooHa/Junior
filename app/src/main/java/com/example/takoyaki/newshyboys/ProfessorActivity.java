@@ -46,20 +46,17 @@ public class ProfessorActivity extends AppCompatActivity
     public Handler hMain = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     UI_change(); //MainActivity의 함수이다.
                     break;
                 case 1:
                     duplication();
-                    break;
-                default:
-                    break;
+
             }
-
-
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +65,10 @@ public class ProfessorActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         setTitle("");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -86,16 +81,14 @@ public class ProfessorActivity extends AppCompatActivity
         room.setText(roomcode);//룸코드를 textview로 출력
 
         listView = (ListView) findViewById( R.id.question_List);
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.row, arrayList);
         listView.setAdapter(arrayAdapter) ;
         Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
         client = new SocketClient(ip,port, roomcode, "Professor",1,hMain);
         Log.d("debug", "확인2");
         client.start();
-        Log.d("debug", "확인3");
 
-        Log.d("debug", "확인4");
     }
 
     @Override
@@ -176,7 +169,9 @@ public class ProfessorActivity extends AppCompatActivity
     }
 
     public void UI_change(){
+        Log.d("debug", "리시브 스레드6");
         arrayAdapter.notifyDataSetChanged();
+        Log.d("debug", "리시브 스레드7");
     }
     public void duplication(){
         Context mContext = getApplicationContext();
