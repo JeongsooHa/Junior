@@ -82,7 +82,7 @@ public class ProfessorActivity extends AppCompatActivity
 
         listView = (ListView) findViewById( R.id.question_List);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.row, arrayList);
-        listView.setAdapter(arrayAdapter) ;
+        listView.setAdapter(arrayAdapter);
         Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
         client = new SocketClient(ip,port, roomcode, "Professor",1,hMain);
