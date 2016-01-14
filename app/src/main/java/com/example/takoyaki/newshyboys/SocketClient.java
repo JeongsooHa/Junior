@@ -1,5 +1,6 @@
 package com.example.takoyaki.newshyboys;
 
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.IOException;
@@ -17,13 +18,15 @@ public class SocketClient extends Thread{
     SendThread sendthread;
     ReceiveThread receivethread;
     String roomcode;
+    Handler hMain;
 
-    public SocketClient(String ip, int port,String roomcode, String inputtext,int SorP) {
+    public SocketClient(String ip, int port,String roomcode, String inputtext,int SorP,Handler hMain) {
         this.ip = ip;
         this.port = port;
         this.inputtext = inputtext;
         this.SorP = SorP;
         this.roomcode = roomcode;
+        this.hMain = hMain;
     }
 
     public void run() {
@@ -35,7 +38,7 @@ public class SocketClient extends Thread{
             sendthread = new SendThread(socket,roomcode,inputtext,SorP);
             sendthread.start();
             if(SorP==1){
-                receivethread = new ReceiveThread(socket, roomcode);
+                receivethread = new ReceiveThread(socket, roomcode,hMain);
                 receivethread.start();
             }
         } catch (IOException e) {

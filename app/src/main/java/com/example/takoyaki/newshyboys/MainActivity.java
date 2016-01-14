@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     public ImageButton send;
     private MyTimerTask timerTask;
     private EditText code_edit;
+    Handler hMain=null;
 
 
 
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity
                     timerTask = new MyTimerTask();
                     timer.schedule(timerTask, 500);
                     //connect socket and send message to server
-                    client = new SocketClient(ip, port, roomcode, inputText, 0);
+                    client = new SocketClient(ip, port, roomcode, inputText, 0,hMain);
                     client.start();
 //                sendthread = new SendThread(client.socket,inputText,0);
 //                sendthread.start();
