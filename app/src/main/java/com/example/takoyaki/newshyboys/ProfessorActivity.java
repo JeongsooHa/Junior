@@ -83,7 +83,6 @@ public class ProfessorActivity extends AppCompatActivity
 
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.professor_listview_row, arrayList);
         listView = (ListView) findViewById( R.id.question_List);
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.row, arrayList);
         listView.setAdapter(arrayAdapter);
         Log.d("debug", "확인");
         //서버와 socket통신을 하기 위한 사전작업
@@ -107,27 +106,6 @@ public class ProfessorActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.professor, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
