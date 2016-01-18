@@ -13,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +27,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,8 +56,7 @@ public class MainActivity extends AppCompatActivity
     private MyTimerTask timerTask;
     private EditText code_edit;
     Handler hMain=null;
-    private TextView present_code;
-
+    private TextView main_textView;
 
 
     @Override
@@ -77,11 +79,14 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        main_textView = (TextView) findViewById(R.id.lvMessageList);
         question = (EditText) findViewById(R.id.question_Text);
         send = (ImageButton) findViewById(R.id.send_Button);
+
 
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.anitest);
         send.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +131,37 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        question.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                main_textView.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(question.getText().toString().equals("")){
+                    main_textView.setText("질문을 입력하세요");
+                }
+            }
+        });
+//        question.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus == true) {
+//                    myScrollView.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            myScrollView.smoothScrollBy(0, 800);
+//                        }
+//                    }, 100);
+//                }
+//            }
+//        });
     }
 
         private class MyTimerTask extends TimerTask {
