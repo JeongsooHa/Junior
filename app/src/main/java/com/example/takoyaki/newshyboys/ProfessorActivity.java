@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,11 +26,19 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ProfessorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +53,9 @@ public class ProfessorActivity extends AppCompatActivity
     static ArrayAdapter<String> arrayAdapter;
     static ArrayList<String> arrayList = new ArrayList<String>();
     ListView listView;
+    String state;
+    File path;    //저장 데이터가 존재하는 디렉토리경로
+    File file;     //파일명까지 포함한 경로
 
     public Handler hMain = new Handler() {
         @Override
@@ -74,6 +88,66 @@ public class ProfessorActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        state = Environment.getExternalStorageState();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                long now = System.currentTimeMillis();
+
+                Date date = new Date(now);
+                SimpleDateFormat CurDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String strCurDate = CurDateFormat.format(date);
+                String filename = strCurDate+="-"+roomcode;
+                if (!state.equals(Environment.MEDIA_MOUNTED)) {
+                    Toast.makeText(ProfessorActivity.this, "SDcard Not Mounted", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+                file = new File(path,filename); //파일명까지 포함함 경로의 File 객체 생성
+
+                try {
+                    //데이터 추가가 가능한 파일 작성자(FileWriter 객체생성)
+                    FileWriter wr = new FileWriter(file, true); //두번째 파라미터 true: 기존파일에 추가할지 여부를 나타냅니다.
+                    PrintWriter writer = new PrintWriter(wr);
+                    String content="";
+
+                    for(int i = 0 ; i < arrayList.size();i++){
+                        content += arrayList.get(i).toString();
+                        Log.d("debughmm",content);
+                    }
+
+
+                    writer.println(content);
+                    writer.close();
+
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                // File객체로부터 Uri값 생성
+                final Uri fileUri = Uri.fromFile(file);
+
+                Intent it = new Intent(Intent.ACTION_SEND);
+                it.setType("plain/text");
+
+                // 수신인 주소 - tos배열의 값을 늘릴 경우 다수의 수신자에게 발송됨
+                String[] tos = {""};
+                it.putExtra(Intent.EXTRA_EMAIL, tos);
+                it.putExtra(Intent.EXTRA_SUBJECT,strCurDate+" 질문");
+                it.putExtra(Intent.EXTRA_TEXT, "룸코드 : "+roomcode);
+
+                // 파일첨부
+                it.putExtra(Intent.EXTRA_STREAM,fileUri);
+
+                startActivity(it);
+            }
+        });
 
         room = (TextView)findViewById(R.id.room_Text);
         Intent intent = getIntent();
