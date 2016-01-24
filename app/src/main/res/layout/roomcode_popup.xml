@@ -26,6 +26,13 @@
             android:linksClickable="false" />
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/present_code_Text"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
