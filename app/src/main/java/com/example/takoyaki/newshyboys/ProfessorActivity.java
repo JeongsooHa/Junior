@@ -46,13 +46,16 @@ public class ProfessorActivity extends AppCompatActivity
     String roomcode;
     TextView room;
     SocketClient client;
-    //private String ip = "168.188.129.152";
+    //   private String ip = "168.188.129.152";
     private String ip = "168.188.128.130";
     private int port = 5000;
     private EditText code_edit;
     static ArrayAdapter<String> arrayAdapter;
     static ArrayList<String> arrayList = new ArrayList<String>();
     ListView listView;
+    String state;
+    File path;    //저장 데이터가 존재하는 디렉토리경로
+    File file;     //파일명까지 포함한 경로
 
     public Handler hMain = new Handler() {
         @Override

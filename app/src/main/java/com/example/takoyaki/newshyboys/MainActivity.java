@@ -23,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.*;
@@ -41,8 +42,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private SocketClient client;
-    private String ip = "168.188.129.152";
-    //    private String ip = "168.188.128.130";
+    //private String ip = "168.188.129.152";
+    private String ip = "168.188.128.130";
     private int port = 5000;
     String roomcode=null;
     public EditText question;
