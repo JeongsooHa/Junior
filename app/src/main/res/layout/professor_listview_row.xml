@@ -4,5 +4,6 @@
     android:layout_height="match_parent"
     android:background = "@drawable/list_view"
     android:textSize="25dp">
+    >
 
 </TextView>
