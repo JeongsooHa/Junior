@@ -35,8 +35,8 @@ public class ProfessorActivity extends AppCompatActivity
     String roomcode;
     TextView room;
     SocketClient client;
-    private String ip = "168.188.129.152";
-//    private String ip = "168.188.128.130";
+    //private String ip = "168.188.129.152";
+    private String ip = "168.188.128.130";
     private int port = 5000;
     private EditText code_edit;
     static ArrayAdapter<String> arrayAdapter;
