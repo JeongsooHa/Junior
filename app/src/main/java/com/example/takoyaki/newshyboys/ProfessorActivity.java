@@ -46,7 +46,7 @@ public class ProfessorActivity extends AppCompatActivity
     String roomcode;
     TextView room;
     SocketClient client;
- //   private String ip = "168.188.129.152";
+    //   private String ip = "168.188.129.152";
     private String ip = "168.188.128.130";
     private int port = 5000;
     private EditText code_edit;
@@ -80,7 +80,6 @@ public class ProfessorActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         setTitle("");
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
