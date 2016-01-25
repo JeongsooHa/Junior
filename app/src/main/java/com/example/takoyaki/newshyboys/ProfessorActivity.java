@@ -148,12 +148,8 @@ public class ProfessorActivity extends AppCompatActivity
                 startActivity(it);
             }
         });
-
-        room = (TextView)findViewById(R.id.room_Text);
         Intent intent = getIntent();
         roomcode = intent.getExtras().getString("code");//roomcode 정보를 저장
-        room.setText(roomcode);//룸코드를 textview로 출력
-
 
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.professor_listview_row, arrayList);
         listView = (ListView) findViewById( R.id.question_List);
